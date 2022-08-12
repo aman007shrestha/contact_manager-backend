@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import logger from "./misc/logger";
 import { notFound } from "./middlewares/notFound";
 import { errorHandler } from "./middlewares/errorHandler";
+import appRoutes from "./routes";
 dotenv.config();
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
@@ -22,7 +23,7 @@ app.get("/", (req: Request, res: Response) => {
     
   `);
 });
-
+app.use(appRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
