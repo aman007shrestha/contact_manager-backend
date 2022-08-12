@@ -30,7 +30,6 @@ export const protectedRoute = async (
         process.env.JWT_SECRET as string
       ) as IDataStoredInToken;
       req.user_id = decoded.id;
-      res.json(req.user_id);
       next();
     } catch (error) {
       next(new CustomError("Not Authorized", StatusCodes.UNAUTHORIZED));
