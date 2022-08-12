@@ -1,6 +1,6 @@
 # Description
 
-CRUD API using nodejs and express on local filesystem
+Backend for contact manager application using express.
 
 ## How to run?
 
