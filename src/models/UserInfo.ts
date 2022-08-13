@@ -1,13 +1,21 @@
-// import { StatusCodes } from "http-status-codes";
 import db from "../db/db";
-import IUserInfo, { IUserInfoToInsert } from "../domain/UserInfo";
-import logger from "../misc/logger";
 import CustomError from "../misc/CustomError";
+import logger from "../misc/logger";
+import IUserInfo, { IUserInfoToInsert } from "../domain/UserInfo";
 
+/**
+ * @desc database methods for making database changes. Actual database interaction point.
+ */
 class UserInfoTable {
   public static table = "user_info";
-  // Methods
+  // different methods for interacting database
+
+  /**
+   * @desc queries database to return all users from database
+   * @returns list of user_info objects
+   */
   public static async getAllUserInfo() {
+    logger.info(`Getting all users info`);
     let usersInfo;
     try {
       usersInfo = await db(UserInfoTable.table).select();
@@ -16,9 +24,16 @@ class UserInfoTable {
       logger.info(error.message);
     }
   }
+
+  /**
+   *
+   * @param user_info_id :id based on which user_info object is to be queried
+   * @returns user_info object
+   */
   public static async getUserInfoById(
     user_info_id: number
   ): Promise<IUserInfo> {
+    logger.info(`getting user info for ${user_info_id} user`);
     const userInfo = await db(UserInfoTable.table)
       .where({ user_info_id })
       .select()
@@ -26,8 +41,13 @@ class UserInfoTable {
     return userInfo;
   }
 
+  /**
+   *
+   * @param userInfo : Data which is to be inserted into database
+   * @returns newly inserted user_info object
+   */
   public static async createUserInfo(userInfo: IUserInfoToInsert) {
-    logger.info(`Database query to insert user info`);
+    logger.info(`database: creating user_info`);
     let newUserInfo;
     try {
       newUserInfo = await db(UserInfoTable.table).insert(userInfo, ["*"]);
@@ -37,8 +57,13 @@ class UserInfoTable {
     }
   }
 
+  /**
+   *
+   * @param userInfo : info with which user_info object is to be updated
+   * @returns updated user_info object
+   */
   public static async updateUserInfo(userInfo: IUserInfo) {
-    logger.info(`Database Update for userInfo ${userInfo.email}`);
+    logger.info(`database: Update for userInfo ${userInfo.email}`);
     let updatedUser;
     try {
       updatedUser = await db(UserInfoTable.table)
@@ -51,8 +76,12 @@ class UserInfoTable {
     }
   }
 
+  /**
+   *
+   * @param userInfoId :id whose user_info object is to be deleted
+   */
   public static async deleteUserInfo(userInfoId: number): Promise<void> {
-    logger.info(`Database Delete for userInfo ${userInfoId}`);
+    logger.info(`database: Delete for userInfo ${userInfoId}`);
     try {
       await db(UserInfoTable.table)
         .where({ user_info_id: userInfoId })

@@ -1,13 +1,20 @@
 import logger from "../misc/logger";
 import ISuccess from "../domain/Success";
+import UserInfoModel from "../models/UserInfo";
+import CustomError from "../misc/CustomError";
+import ContactModel from "../models/Contact";
+import { StatusCodes } from "http-status-codes";
 import IUserInfo, {
   IUserInfoToInsert,
   IDeleteUserInfo,
+  IAddToContact,
 } from "../domain/UserInfo";
-import UserInfoModel from "../models/UserInfo";
-import CustomError from "../misc/CustomError";
-import { StatusCodes } from "http-status-codes";
+// import IContact from "../domain/Contact";
 
+/**
+ * @desc makes db get query for all user_info
+ * @returns object with data and message
+ */
 export const getAllUserInfo = async (): Promise<ISuccess<IUserInfo[]>> => {
   logger.info(`Getting All Users Info`);
   const usersInfo = await UserInfoModel.getAllUserInfo();
@@ -17,6 +24,11 @@ export const getAllUserInfo = async (): Promise<ISuccess<IUserInfo[]>> => {
   };
 };
 
+/**
+ *
+ * @param userInfo : payload which is to be provided for create method in db modek
+ * @returns object with data and message
+ */
 export const createUserInfo = async (
   userInfo: IUserInfoToInsert
 ): Promise<ISuccess<IUserInfo>> => {
@@ -29,6 +41,11 @@ export const createUserInfo = async (
   };
 };
 
+/**
+ *
+ * @param userInfo Info with which update method in db model is to be queried
+ * @returns Object with updatedUser and message
+ */
 export const updateUserInfo = async (
   userInfo: IUserInfo
 ): Promise<ISuccess<IUserInfo>> => {
@@ -56,6 +73,11 @@ export const updateUserInfo = async (
   };
 };
 
+/**
+ *
+ * @param userInfo : user_info_id and user_account_id, user_account_id to check ownership and user_info_id for delete method in db model
+ * @returns Object with message
+ */
 export const deleteUserInfo = async (
   userInfo: IDeleteUserInfo
 ): Promise<ISuccess<IUserInfo>> => {
@@ -79,5 +101,39 @@ export const deleteUserInfo = async (
   await UserInfoModel.deleteUserInfo(userInfo.user_info_id);
   return {
     message: "User Info deleted Successfully",
+  };
+};
+
+/**
+ * @desc performs contact DB query to add user
+ * @param userInfo user_account_id and user_info id
+ * @returns
+ */
+export const addToContact = async (userInfo: IAddToContact) => {
+  const existingUserInfo = await UserInfoModel.getUserInfoById(
+    userInfo.user_info_id
+  );
+  if (!existingUserInfo) {
+    throw new CustomError(
+      `User Info does not exist for that id`,
+      StatusCodes.BAD_REQUEST
+    );
+  }
+  if (existingUserInfo.share === 0) {
+    throw new CustomError(
+      `User Info is not accessible`,
+      StatusCodes.UNAUTHORIZED
+    );
+  }
+  const newContact = await ContactModel.createContact({
+    name: existingUserInfo.name,
+    email: existingUserInfo.email,
+    contacts: existingUserInfo.contacts,
+    image: existingUserInfo.email,
+    user_account_id: userInfo.user_account_id,
+  });
+  return {
+    data: newContact,
+    message: "Contact Registered Successfully",
   };
 };

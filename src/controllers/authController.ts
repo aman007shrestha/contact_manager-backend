@@ -1,16 +1,18 @@
+import logger from "../misc/logger";
+import * as authService from "../services/authServices";
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import * as authService from "../services/authServices";
 
 /**
  *
  * @param req
  * @param res
  * @param next
- * @desc login controller handles promise from login service
+ * @desc handles service for loggin in a user.
  */
 export const login = (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
+  logger.info(`controller: Logging in user ${email}`);
   authService
     .login({ email, password })
     .then((data) => res.json(data))
@@ -25,10 +27,11 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
  * @param req
  * @param res
  * @param next
- * @desc register controller handles promise from register controller
+ * @desc handles service for registrating a user
  */
 export const register = (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
+  logger.info(`controller: registering in user ${email}`);
   authService
     .createUser({ email, password })
     .then((data) => res.status(StatusCodes.CREATED).json(data))
