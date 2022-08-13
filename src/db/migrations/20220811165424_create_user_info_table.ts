@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<void> {
     table.json("contacts").notNullable();
     table.string("image");
     table.integer("share").defaultTo(0);
-    table.integer("user_account_id").notNullable();
+    table.integer("user_account_id").notNullable().unique();
     table
       .foreign("user_account_id")
       .references("id")
