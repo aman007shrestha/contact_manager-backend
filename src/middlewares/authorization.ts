@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
 import { IDataStoredInToken } from "../domain/Token";
-
+import UserAccountModel from "../models/UserAccount";
 import { RequestWithUser } from "../domain/CustomRequest";
 import CustomError from "../misc/CustomError";
 import { StatusCodes } from "http-status-codes";
@@ -30,6 +30,11 @@ export const protectedRoute = async (
         process.env.JWT_SECRET as string
       ) as IDataStoredInToken;
       req.user_id = decoded.id;
+      // Check this id is in database
+      const user = await UserAccountModel.getUserById(decoded.id);
+      if (!user) {
+        next(new CustomError("Not Authorized", StatusCodes.UNAUTHORIZED));
+      }
       next();
     } catch (error) {
       next(new CustomError("Not Authorized", StatusCodes.UNAUTHORIZED));

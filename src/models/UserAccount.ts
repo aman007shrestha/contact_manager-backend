@@ -1,5 +1,5 @@
 import db from "../db/db";
-import IUser, { IUserToInsert } from "../domain/UserAccount";
+import IUser, { IReturnedUser, IUserToInsert } from "../domain/UserAccount";
 import CustomError from "../misc/CustomError";
 
 class UserAccount {
@@ -12,6 +12,8 @@ class UserAccount {
    */
   public static async createUser(user: IUserToInsert) {
     let createdUser;
+    console.log(user);
+
     try {
       createdUser = await db(UserAccount.table).insert(user, ["id", "email"]);
       return createdUser;
@@ -27,6 +29,11 @@ class UserAccount {
    */
   public static async getUserByEmail(email: string): Promise<IUser> {
     const user = await db(UserAccount.table).where({ email }).select().first();
+    return user;
+  }
+
+  public static async getUserById(id: number): Promise<IReturnedUser> {
+    const user = await db(UserAccount.table).where({ id }).select().first();
     return user;
   }
 }
