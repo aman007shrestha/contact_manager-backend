@@ -11,4 +11,5 @@ export interface IDeleteUserInfo {
   user_info_id: number;
   user_account_id: number;
 }
+export type IAddToContact = IDeleteUserInfo;
 export type IUserInfoToInsert = Omit<IUserInfo, "user_info_id">;
