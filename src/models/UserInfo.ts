@@ -30,14 +30,17 @@ class UserInfoTable {
    * @returns user_info objects
    */
   public static async getSelfInfo(user_account_id: number) {
-    logger.info(`Getting all users info`);
+    logger.info(`Getting self users info`);
     let userInfo;
     try {
       userInfo = await db(UserInfoTable.table)
         .where({ user_account_id })
         .select()
         .first();
-      return userInfo;
+      if (!userInfo) {
+        return [];
+      }
+      return [userInfo];
     } catch (error: any) {
       logger.info(error.message);
     }
