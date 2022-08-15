@@ -2,6 +2,7 @@ import { Router } from "express";
 import authRoutes from "./authRoutes";
 import userRoutes from "./userRoutes";
 import contactRoutes from "./contactRoutes";
+import favContactRoutes from "./favContactRoutes";
 import { protectedRoute } from "../middlewares/authorization";
 
 /**
@@ -12,4 +13,5 @@ const router = Router();
 router.use("/auth", authRoutes);
 router.use("/user", protectedRoute, userRoutes);
 router.use("/contact", protectedRoute, contactRoutes);
+router.use("/fav", protectedRoute, favContactRoutes);
 export default router;

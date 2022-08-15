@@ -96,6 +96,6 @@ export const deleteContact = async (
   }
   await ContactModel.deleteContact(contactData.contact_id);
   return {
-    message: "User Info deleted Successfully",
+    message: "Contact deleted Successfully",
   };
 };

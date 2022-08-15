@@ -25,6 +25,25 @@ export const getAllUserInfo = (
 };
 
 /**
+ * @desc handles service for get self user info
+ * @param req
+ * @param res
+ * @param next
+ */
+export const getSelfInfo = (
+  req: RequestWithUser,
+  res: Response,
+  next: NextFunction
+) => {
+  logger.info(`controller: getting self userInfo`);
+  const user_account_id = req.user_id as number;
+  userInfoServices
+    .getSelfInfo(user_account_id)
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
+};
+
+/**
  * @desc handles service for creating a userInfo by loggedInUser
  * @param req
  * @param res

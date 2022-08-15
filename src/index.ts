@@ -23,7 +23,7 @@ app.get("/", (req: Request, res: Response) => {
     
   `);
 });
-app.use(appRoutes);
+app.use("/api", appRoutes);
 app.use(notFound);
 app.use(errorHandler);
 

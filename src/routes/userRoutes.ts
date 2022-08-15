@@ -7,6 +7,7 @@ import * as userInfoController from "../controllers/userInfoController";
  */
 const router = Router();
 router.get("/", userInfoController.getAllUserInfo);
+router.get("/self", userInfoController.getSelfInfo);
 router.post("/", userInfoController.createUserInfo);
 router.put("/:userInfoId", userInfoController.updateUserInfo);
 router.delete("/:userInfoId", userInfoController.deleteUserInfo);
