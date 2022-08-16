@@ -32,7 +32,7 @@ export const setFavouriteContact = (
   next: NextFunction
 ) => {
   const userId = req.user_id as number;
-  const { contactId } = req.params;
+  const { contactId } = req.body;
   favServices
     .setFavouriteContact({ contact_id: +contactId, user_account_id: userId })
     .then((data) => res.json(data))

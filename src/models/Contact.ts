@@ -66,10 +66,13 @@ class ContactTable {
    *
    * @param contactId the id of contact object which is to be deleted
    */
-  public static async deleteContact(contactId: number): Promise<void> {
+  public static async deleteContact(contactId: number) {
     logger.info(`Database Delete for userInfo ${contactId}`);
     try {
-      await db(ContactTable.table).where({ contact_id: contactId }).delete();
+      const deletedContact = await db(ContactTable.table)
+        .where({ contact_id: contactId })
+        .delete();
+      return deletedContact;
     } catch (error: any) {
       throw new CustomError(error.message, 500);
     }

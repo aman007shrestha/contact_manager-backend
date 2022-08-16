@@ -37,6 +37,7 @@ class FavouriteTable {
     favouriteData: IFavouriteContactToInsert
   ) {
     let favouriteContact;
+    logger.info("Setting Favorite");
     try {
       favouriteContact = await db(FavouriteTable.table).insert(favouriteData, [
         "*",

@@ -6,7 +6,7 @@ import * as favController from "../controllers/favController";
  * based on some_string and METHODS , controller functions from contact is invoked
  */
 const router = Router();
-router.post("/:contactId", favController.setFavouriteContact);
+router.post("/", favController.setFavouriteContact);
 router.delete("/:contactId", favController.unsetFavouriteContact);
 router.get("/", favController.getAllFavourites);
 
