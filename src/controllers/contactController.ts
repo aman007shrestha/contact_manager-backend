@@ -18,7 +18,6 @@ export const getAllContactsForUser = (
   next: NextFunction
 ) => {
   const userId = req.user_id as number;
-  logger.info(`Controller: getting all contacts for ${req.user_id} user`);
   contactServices
     .getAllContactsForUser(userId)
     .then((data) => res.json(data))
@@ -36,7 +35,6 @@ export const createContact = (
   res: Response,
   next: NextFunction
 ) => {
-  logger.info(`Controller: creating contact for ${req.user_id} user`);
   const { name, email, contacts, image }: IContactToInsert = req.body;
   if (!name || !email || !contacts) {
     throw new CustomError("Input All Fields", StatusCodes.BAD_REQUEST);
@@ -68,9 +66,6 @@ export const updateContact = (
   next: NextFunction
 ) => {
   const { contactId } = req.params;
-  logger.info(
-    `controller: update contact initiated by ${req.user_id} user for ${contactId} contact`
-  );
   const { name, email, contacts, image }: IContactToInsert = req.body;
   if (!name || !email || !contacts) {
     throw new CustomError("Input All Fields", StatusCodes.BAD_REQUEST);
@@ -101,9 +96,6 @@ export const deleteContact = (
   next: NextFunction
 ) => {
   const { contactId } = req.params;
-  logger.info(
-    `controller: delete contact initiated by ${req.user_id} user for ${contactId} contact `
-  );
 
   const user_account_id = req.user_id as number;
   contactServices

@@ -9,6 +9,7 @@ import IUserInfo, {
   IDeleteUserInfo,
   IAddToContact,
 } from "../domain/UserInfo";
+import { cloudinaryUpload } from "../misc/cloudinaryUtils";
 // import IContact from "../domain/Contact";
 
 /**
@@ -49,6 +50,9 @@ export const createUserInfo = async (
 ): Promise<ISuccess<IUserInfo>> => {
   logger.info(`Creating user info`);
   logger.info(`Logging from services ${userInfo}`);
+  if (userInfo.image) {
+    userInfo.image = await cloudinaryUpload(userInfo.image);
+  }
   const newUserInfo = await UserInfoModel.createUserInfo(userInfo);
   return {
     data: newUserInfo,
@@ -80,6 +84,10 @@ export const updateUserInfo = async (
       `You are not authorized to update other's account`,
       StatusCodes.UNAUTHORIZED
     );
+  }
+  // Upload to cloudinary only if image is changed
+  if (userInfo.image.length > 100) {
+    userInfo.image = await cloudinaryUpload(userInfo.image);
   }
   const updatedUserInfo = await UserInfoModel.updateUserInfo(userInfo);
   return {

@@ -4,6 +4,7 @@ import IContact, { IContactToInsert, IDeleteContact } from "../domain/Contact";
 import ContactModel from "../models/Contact";
 import CustomError from "../misc/CustomError";
 import { StatusCodes } from "http-status-codes";
+import { cloudinaryUpload } from "../misc/cloudinaryUtils";
 
 /**
  *
@@ -30,6 +31,13 @@ export const createContact = async (
   contactData: IContactToInsert
 ): Promise<ISuccess<IContact>> => {
   logger.info(`Creating contact ${contactData.email}`);
+  console.log(contactData.image);
+
+  // If image exits upload to cloudinary
+  if (contactData.image) {
+    contactData.image = await cloudinaryUpload(contactData.image);
+  }
+
   const newContact = await ContactModel.createContact(contactData);
   return {
     data: newContact,
@@ -61,6 +69,10 @@ export const updateContact = async (
       `You are not authorized to update other's account`,
       StatusCodes.UNAUTHORIZED
     );
+  }
+  // If image exits upload to cloudinary
+  if (contactData.image.length > 100) {
+    contactData.image = await cloudinaryUpload(contactData.image);
   }
   const updatedContact = await ContactModel.updateContact(contactData);
   return {
@@ -96,6 +108,7 @@ export const deleteContact = async (
   }
   await ContactModel.deleteContact(contactData.contact_id);
   return {
+    data: existingContact,
     message: "Contact deleted Successfully",
   };
 };

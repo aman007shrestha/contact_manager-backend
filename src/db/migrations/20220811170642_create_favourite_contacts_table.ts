@@ -9,12 +9,12 @@ export async function up(knex: Knex): Promise<void> {
       .foreign("contact_id")
       .references("contact_id")
       .inTable("contact")
-      .onDelete("SET NULL");
+      .onDelete("CASCADE");
     table
       .foreign("user_account_id")
       .references("id")
       .inTable("user_account")
-      .onDelete("SET NULL");
+      .onDelete("CASCADE");
   });
 }
 
