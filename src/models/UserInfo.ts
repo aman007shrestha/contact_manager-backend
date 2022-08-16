@@ -18,8 +18,29 @@ class UserInfoTable {
     logger.info(`Getting all users info`);
     let usersInfo;
     try {
-      usersInfo = await db(UserInfoTable.table).select();
+      usersInfo = await db(UserInfoTable.table).where({ share: 1 }).select();
       return usersInfo;
+    } catch (error: any) {
+      logger.info(error.message);
+    }
+  }
+
+  /**
+   * @desc queries database to return self user info from database
+   * @returns user_info objects
+   */
+  public static async getSelfInfo(user_account_id: number) {
+    logger.info(`Getting self users info`);
+    let userInfo;
+    try {
+      userInfo = await db(UserInfoTable.table)
+        .where({ user_account_id })
+        .select()
+        .first();
+      if (!userInfo) {
+        return [];
+      }
+      return [userInfo];
     } catch (error: any) {
       logger.info(error.message);
     }

@@ -10,7 +10,9 @@ const app: Application = express();
 const PORT = process.env.PORT || 5000;
 
 // Middlewares
-app.use(express.json());
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
@@ -23,7 +25,7 @@ app.get("/", (req: Request, res: Response) => {
     
   `);
 });
-app.use(appRoutes);
+app.use("/api", appRoutes);
 app.use(notFound);
 app.use(errorHandler);
 

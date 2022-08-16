@@ -9,6 +9,7 @@ import IUserInfo, {
   IDeleteUserInfo,
   IAddToContact,
 } from "../domain/UserInfo";
+import { cloudinaryUpload } from "../misc/cloudinaryUtils";
 // import IContact from "../domain/Contact";
 
 /**
@@ -20,7 +21,22 @@ export const getAllUserInfo = async (): Promise<ISuccess<IUserInfo[]>> => {
   const usersInfo = await UserInfoModel.getAllUserInfo();
   return {
     data: usersInfo,
-    message: "Registrations fetched successfully",
+    message: "Users fetched successfully",
+  };
+};
+
+/**
+ * @desc makes db get query for self user_info
+ * @returns object with data and message
+ */
+export const getSelfInfo = async (
+  user_account_id: number
+): Promise<ISuccess<IUserInfo>> => {
+  logger.info(`Getting User Info`);
+  const userInfo = await UserInfoModel.getSelfInfo(user_account_id);
+  return {
+    data: userInfo,
+    message: "Self User fetched successfully",
   };
 };
 
@@ -34,6 +50,9 @@ export const createUserInfo = async (
 ): Promise<ISuccess<IUserInfo>> => {
   logger.info(`Creating user info`);
   logger.info(`Logging from services ${userInfo}`);
+  if (userInfo.image) {
+    userInfo.image = await cloudinaryUpload(userInfo.image);
+  }
   const newUserInfo = await UserInfoModel.createUserInfo(userInfo);
   return {
     data: newUserInfo,
@@ -65,6 +84,10 @@ export const updateUserInfo = async (
       `You are not authorized to update other's account`,
       StatusCodes.UNAUTHORIZED
     );
+  }
+  // Upload to cloudinary only if image is changed
+  if (userInfo.image.length > 100) {
+    userInfo.image = await cloudinaryUpload(userInfo.image);
   }
   const updatedUserInfo = await UserInfoModel.updateUserInfo(userInfo);
   return {

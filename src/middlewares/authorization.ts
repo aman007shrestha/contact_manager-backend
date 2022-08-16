@@ -30,8 +30,10 @@ export const protectedRoute = async (
         process.env.JWT_SECRET as string
       ) as IDataStoredInToken;
       req.user_id = decoded.id;
+
       // check this id is in database. if no user with that id, user is unauthorized
       const user = await UserAccountModel.getUserById(decoded.id);
+
       if (!user) {
         next(new CustomError("Not Authorized", StatusCodes.UNAUTHORIZED));
       }

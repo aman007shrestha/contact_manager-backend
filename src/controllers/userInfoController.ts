@@ -25,6 +25,24 @@ export const getAllUserInfo = (
 };
 
 /**
+ * @desc handles service for get self user info
+ * @param req
+ * @param res
+ * @param next
+ */
+export const getSelfInfo = (
+  req: RequestWithUser,
+  res: Response,
+  next: NextFunction
+) => {
+  const user_account_id = req.user_id as number;
+  userInfoServices
+    .getSelfInfo(user_account_id)
+    .then((data) => res.json(data))
+    .catch((err) => next(err));
+};
+
+/**
  * @desc handles service for creating a userInfo by loggedInUser
  * @param req
  * @param res
@@ -35,7 +53,6 @@ export const createUserInfo = (
   res: Response,
   next: NextFunction
 ) => {
-  logger.info(`controller: creating userInfo for ${req.user_id} user`);
   const { name, email, contacts, image, share }: IUserInfoToInsert = req.body;
   if (!name || !email || !contacts) {
     throw new CustomError("Input All Fields", StatusCodes.BAD_REQUEST);
@@ -68,9 +85,6 @@ export const updateUserInfo = (
   next: NextFunction
 ) => {
   const { userInfoId } = req.params;
-  logger.info(
-    `controller: update UserInfo initiated by ${req.user_id} for ${userInfoId}`
-  );
   const { name, email, contacts, image, share }: IUserInfoToInsert = req.body;
   if (!name || !email || !contacts) {
     throw new CustomError("Input All Fields", StatusCodes.BAD_REQUEST);
@@ -101,7 +115,6 @@ export const deleteUserInfo = (
   res: Response,
   next: NextFunction
 ) => {
-  logger.info(`Controller deleteUserInfo initiated for ${req.user_id}`);
   const { userInfoId } = req.params;
 
   const user_account_id = req.user_id as number;
@@ -125,7 +138,6 @@ export const addToContact = (
   res: Response,
   next: NextFunction
 ) => {
-  logger.info(`Controller: adding user to contact for ${req.user_id}`);
   const { userInfoId } = req.params;
   const user_account_id = req.user_id as number;
   userInfoServices
