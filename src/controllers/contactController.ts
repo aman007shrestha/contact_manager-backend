@@ -1,4 +1,3 @@
-import logger from "../misc/logger";
 import CustomError from "../misc/CustomError";
 import * as contactServices from "../services/contactServices";
 import { NextFunction, Response } from "express";

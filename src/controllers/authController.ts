@@ -1,4 +1,3 @@
-import logger from "../misc/logger";
 import * as authService from "../services/authServices";
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
