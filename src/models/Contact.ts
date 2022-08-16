@@ -81,11 +81,11 @@ class ContactTable {
    * @returns the contact object
    */
   public static async getContactById(contactId: number): Promise<IContact> {
-    const userInfo = await db(ContactTable.table)
+    const contact = await db(ContactTable.table)
       .where({ contact_id: contactId })
       .select()
       .first();
-    return userInfo;
+    return contact;
   }
 }
 export default ContactTable;

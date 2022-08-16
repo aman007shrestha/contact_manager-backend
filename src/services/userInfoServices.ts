@@ -20,7 +20,22 @@ export const getAllUserInfo = async (): Promise<ISuccess<IUserInfo[]>> => {
   const usersInfo = await UserInfoModel.getAllUserInfo();
   return {
     data: usersInfo,
-    message: "Registrations fetched successfully",
+    message: "Users fetched successfully",
+  };
+};
+
+/**
+ * @desc makes db get query for self user_info
+ * @returns object with data and message
+ */
+export const getSelfInfo = async (
+  user_account_id: number
+): Promise<ISuccess<IUserInfo>> => {
+  logger.info(`Getting User Info`);
+  const userInfo = await UserInfoModel.getSelfInfo(user_account_id);
+  return {
+    data: userInfo,
+    message: "Self User fetched successfully",
   };
 };
 
