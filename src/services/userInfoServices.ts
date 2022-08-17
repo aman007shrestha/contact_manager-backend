@@ -93,7 +93,6 @@ export const updateUserInfo = async (
   if (userInfo.image.length < 10) {
     userInfo.image = existingUserInfo.image;
   }
-
   const updatedUserInfo = await UserInfoModel.updateUserInfo(userInfo);
   return {
     data: updatedUserInfo,
