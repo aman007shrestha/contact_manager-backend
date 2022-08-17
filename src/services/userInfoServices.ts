@@ -85,8 +85,13 @@ export const updateUserInfo = async (
     );
   }
   // Upload to cloudinary only if image is changed
-  if (userInfo.image.length > 100) {
+
+  if (userInfo.image.length > 200) {
     userInfo.image = await cloudinaryUpload(userInfo.image);
+  }
+  // If no image put previous image
+  if (userInfo.image.length < 10) {
+    userInfo.image = existingUserInfo.image;
   }
   const updatedUserInfo = await UserInfoModel.updateUserInfo(userInfo);
   return {
