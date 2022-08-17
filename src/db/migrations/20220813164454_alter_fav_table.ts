@@ -1,7 +1,8 @@
 import { Knex } from "knex";
+import { FAVOURITE_ACCOUNT_TABLE } from "../../constants/constants";
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.alterTable("favourite_account", (table) => {
+  return knex.schema.alterTable(FAVOURITE_ACCOUNT_TABLE, (table) => {
     table.unique(["contact_id", "user_account_id"]);
   });
 }

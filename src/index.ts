@@ -5,14 +5,15 @@ import logger from "./misc/logger";
 import { notFound } from "./middlewares/notFound";
 import { errorHandler } from "./middlewares/errorHandler";
 import appRoutes from "./routes";
+import { TRANSPORT_LIMIT } from "./constants/constants";
 dotenv.config();
 const app: Application = express();
 const PORT = process.env.PORT || 5000;
 
 // Middlewares
 
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb" }));
+app.use(express.json({ limit: TRANSPORT_LIMIT }));
+app.use(express.urlencoded({ limit: TRANSPORT_LIMIT }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 

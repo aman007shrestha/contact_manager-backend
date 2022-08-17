@@ -2,12 +2,13 @@ import db from "../db/db";
 import CustomError from "../misc/CustomError";
 import logger from "../misc/logger";
 import IUserInfo, { IUserInfoToInsert } from "../domain/UserInfo";
-
+import { USER_INFO_TABLE } from "../constants/constants";
+import { USER_INFO_SCHEMA } from "../constants/constants";
 /**
  * @desc database methods for making database changes. Actual database interaction point.
  */
 class UserInfoTable {
-  public static table = "user_info";
+  public static table = USER_INFO_TABLE;
   // different methods for interacting database
 
   /**
@@ -18,7 +19,10 @@ class UserInfoTable {
     logger.info(`Getting all users info`);
     let usersInfo;
     try {
-      usersInfo = await db(UserInfoTable.table).where({ share: 1 }).select();
+      usersInfo = await db(UserInfoTable.table)
+        .where({ share: 1 })
+        .select()
+        .orderBy(USER_INFO_SCHEMA.NAME);
       return usersInfo;
     } catch (error: any) {
       logger.info(error.message);

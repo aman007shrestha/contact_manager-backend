@@ -1,7 +1,8 @@
 import { Knex } from "knex";
+import { CONTACT_TABLE } from "../../constants/constants";
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable("contact", (table) => {
+  return knex.schema.createTable(CONTACT_TABLE, (table) => {
     table.increments("contact_id");
     table.string("name").notNullable();
     table.string("email").notNullable();
@@ -17,5 +18,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists("contact");
+  return knex.schema.dropTableIfExists(CONTACT_TABLE);
 }
