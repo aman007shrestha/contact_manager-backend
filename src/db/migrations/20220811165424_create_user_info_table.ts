@@ -1,22 +1,29 @@
 import { Knex } from "knex";
+import { USER_INFO_TABLE } from "../../constants/constants";
+import {
+  USER_INFO_SCHEMA,
+  USER_ACCOUNT_SCHEMA,
+  USER_ACCOUNT_TABLE,
+  SET_NULL,
+} from "../../constants/constants";
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable("user_info", (table) => {
-    table.increments("user_info_id");
-    table.string("name").notNullable();
-    table.string("email").notNullable();
-    table.json("contacts").notNullable();
-    table.string("image");
-    table.integer("share").defaultTo(0);
-    table.integer("user_account_id").notNullable().unique();
+  return knex.schema.createTable(USER_INFO_TABLE, (table) => {
+    table.increments(USER_INFO_SCHEMA.USER_INFO_ID);
+    table.string(USER_INFO_SCHEMA.NAME).notNullable();
+    table.string(USER_INFO_SCHEMA.EMAIL).notNullable();
+    table.json(USER_INFO_SCHEMA.CONTACTS).notNullable();
+    table.string(USER_INFO_SCHEMA.IMAGE);
+    table.integer(USER_INFO_SCHEMA.SHARE).defaultTo(0);
+    table.integer(USER_INFO_SCHEMA.USER_ACCOUNT_ID).notNullable().unique();
     table
-      .foreign("user_account_id")
-      .references("id")
-      .inTable("user_account")
-      .onDelete("SET NULL");
+      .foreign(USER_INFO_SCHEMA.USER_ACCOUNT_ID)
+      .references(USER_ACCOUNT_SCHEMA.ID)
+      .inTable(USER_ACCOUNT_TABLE)
+      .onDelete(SET_NULL);
   });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists("user_info");
+  return knex.schema.dropTableIfExists(USER_INFO_TABLE);
 }

@@ -1,7 +1,8 @@
 import { Knex } from "knex";
+import { FAVOURITE_ACCOUNT_TABLE } from "../../constants/constants";
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable("favourite_account", (table) => {
+  return knex.schema.createTable(FAVOURITE_ACCOUNT_TABLE, (table) => {
     table.increments("fav_id");
     table.integer("contact_id").notNullable();
     table.integer("user_account_id").notNullable();
@@ -19,5 +20,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists("favorite_account");
+  return knex.schema.dropTableIfExists(FAVOURITE_ACCOUNT_TABLE);
 }

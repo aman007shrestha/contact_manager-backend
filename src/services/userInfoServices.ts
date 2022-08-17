@@ -48,7 +48,6 @@ export const getSelfInfo = async (
 export const createUserInfo = async (
   userInfo: IUserInfoToInsert
 ): Promise<ISuccess<IUserInfo>> => {
-  logger.info(`Creating user info`);
   logger.info(`Logging from services ${userInfo}`);
   if (userInfo.image) {
     userInfo.image = await cloudinaryUpload(userInfo.image);
@@ -152,7 +151,7 @@ export const addToContact = async (userInfo: IAddToContact) => {
     name: existingUserInfo.name,
     email: existingUserInfo.email,
     contacts: existingUserInfo.contacts,
-    image: existingUserInfo.email,
+    image: existingUserInfo.image,
     user_account_id: userInfo.user_account_id,
   });
   return {

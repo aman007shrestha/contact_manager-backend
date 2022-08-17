@@ -11,6 +11,6 @@ router.get("/self", userInfoController.getSelfInfo);
 router.post("/", userInfoController.createUserInfo);
 router.put("/:userInfoId", userInfoController.updateUserInfo);
 router.delete("/:userInfoId", userInfoController.deleteUserInfo);
-router.post("/add/:userInfoId", userInfoController.addToContact);
+router.post("/add", userInfoController.addToContact);
 
 export default router;

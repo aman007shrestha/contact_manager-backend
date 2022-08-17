@@ -5,7 +5,7 @@ import { NextFunction, Response, Request } from "express";
 import { StatusCodes } from "http-status-codes";
 import { RequestWithUser } from "../domain/CustomRequest";
 import { IUserInfoToInsert } from "../domain/UserInfo";
-
+import { INPUT_ALL_FIELDS_MESSAGE } from "../constants/constants";
 /**
  * @desc handles service for get user infos
  * @param req
@@ -55,7 +55,7 @@ export const createUserInfo = (
 ) => {
   const { name, email, contacts, image, share }: IUserInfoToInsert = req.body;
   if (!name || !email || !contacts) {
-    throw new CustomError("Input All Fields", StatusCodes.BAD_REQUEST);
+    throw new CustomError(INPUT_ALL_FIELDS_MESSAGE, StatusCodes.BAD_REQUEST);
   }
   const user_account_id = req.user_id as number;
   userInfoServices
@@ -138,7 +138,7 @@ export const addToContact = (
   res: Response,
   next: NextFunction
 ) => {
-  const { userInfoId } = req.params;
+  const { userInfoId } = req.body;
   const user_account_id = req.user_id as number;
   userInfoServices
     .addToContact({
