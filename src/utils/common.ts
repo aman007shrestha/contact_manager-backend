@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { JWT_VALIDITY } from "../constants/constants";
 
 /**
  * @desc Generates token based on payload
@@ -7,6 +8,6 @@ import jwt from "jsonwebtoken";
  */
 export const generateToken = (id: number): string => {
   return jwt.sign({ id }, process.env.JWT_SECRET as string, {
-    expiresIn: "30d",
+    expiresIn: JWT_VALIDITY,
   });
 };

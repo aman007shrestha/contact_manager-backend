@@ -2,12 +2,13 @@ import db from "../db/db";
 import logger from "../misc/logger";
 import CustomError from "../misc/CustomError";
 import IContact, { IContactToInsert } from "../domain/Contact";
+import { CONTACT_TABLE } from "../constants/constants";
 
 /**
  * @desc database methods for making database changes. Actual database interaction point.
  */
 class ContactTable {
-  public static table = "contact";
+  public static table = CONTACT_TABLE;
   // different methods for interacting database
 
   /**
@@ -20,7 +21,8 @@ class ContactTable {
     try {
       contacts = await db(ContactTable.table)
         .where({ user_account_id: userAccountId })
-        .select();
+        .select()
+        .orderBy("name");
     } catch (error: any) {
       logger.info(error.message);
     }

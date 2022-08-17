@@ -2,12 +2,13 @@ import db from "../db/db";
 import logger from "../misc/logger";
 import CustomError from "../misc/CustomError";
 import { IFavouriteContactToInsert } from "../domain/FavouriteContact";
+import { FAVOURITE_ACCOUNT_TABLE } from "../constants/constants";
 
 /**
  * @desc database methods for making database changes. Actual database interaction point.
  */
 class FavouriteTable {
-  public static table = "favourite_account";
+  public static table = FAVOURITE_ACCOUNT_TABLE;
   // different methods for interacting database
 
   /**

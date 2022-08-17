@@ -4,6 +4,7 @@ import { NextFunction, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { RequestWithUser } from "../domain/CustomRequest";
 import { IContactToInsert } from "../domain/Contact";
+import { INPUT_ALL_FIELDS_MESSAGE } from "../constants/constants";
 
 /**
  * @desc passes user_id arg from req to service function, converts the resolved data to json,
@@ -36,7 +37,7 @@ export const createContact = (
 ) => {
   const { name, email, contacts, image }: IContactToInsert = req.body;
   if (!name || !email || !contacts) {
-    throw new CustomError("Input All Fields", StatusCodes.BAD_REQUEST);
+    throw new CustomError(INPUT_ALL_FIELDS_MESSAGE, StatusCodes.BAD_REQUEST);
   }
   const user_account_id = req.user_id as number;
   contactServices
@@ -67,7 +68,7 @@ export const updateContact = (
   const { contactId } = req.params;
   const { name, email, contacts, image }: IContactToInsert = req.body;
   if (!name || !email || !contacts) {
-    throw new CustomError("Input All Fields", StatusCodes.BAD_REQUEST);
+    throw new CustomError(INPUT_ALL_FIELDS_MESSAGE, StatusCodes.BAD_REQUEST);
   }
   const user_account_id = req.user_id as number;
   contactServices
